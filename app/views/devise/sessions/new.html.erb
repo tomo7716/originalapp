@@ -12,23 +12,23 @@
   <main>
     <h2>ログイン</h2>
 
-    <form action="/login" method="post">
-      <%= csrf_meta_tags %>
+    <%# <%= form_with url: user_session_path, method: :post, local: true, data: { turbo: false } do |f| %>
+    <%= form_with(model: resource, url: session_path(resource_name)) do |f| %>
 
       <div>
-        <label>メールアドレス</label>
-        <input type="email" name="email" required>
+        <%= f.label :email, "メールアドレス" %>
+        <%= f.email_field :email, required: true %>
       </div>
 
       <div>
-        <label>パスワード</label>
-        <input type="password" name="password" required>
+        <%= f.label :password, "パスワード" %>
+        <%= f.password_field :password, required: true %>
       </div>
 
       <div>
-        <button type="submit">ログイン</button>
+        <button type="submit" class="btn">ログイン</button>
       </div>
-    </form>
+    <% end %>
 
     <div class="signup">
       <p>まだアカウントをお持ちでない方はこちら</p>

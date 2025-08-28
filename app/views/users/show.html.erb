@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ポイント管理アプリ - マイページ</title>
+  <%= stylesheet_link_tag 'sessions', media: 'all' %>
+</head>
+<body>
+  <header>
+    <span>ポイント管理アプリ</span>
+    <span>マイページ</span>
+    <span>
+      <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "本当にログアウトしますか？" } %>
+    </span>
+  </header>
+
+  <main>
+    <div class="user-info">
+      <h2><%= current_user.name %> さん</h2>
+    </div>
+
+    <div class="students-list">
+      <h3>生徒名</h3>
+      <ul>
+        <% @students&.each do |student| %>
+          <li>
+            <%= student.name %>（残ポイント：<%# <%= student.points %>）
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <%= link_to "ポイント履歴", "#", class: "btn btn-primary" %>
+      <%= link_to "商品交換申請", "#", class: "btn btn-primary" %>
+    </div>
+  </main>
+</body>
+</html>

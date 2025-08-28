@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_correct_user, only: [:show]
+
   def new
     @user = User.new
   end
@@ -12,8 +15,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    @user = current_user
+    @students = @user.students || []
+  end
+
    private
-  def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+
+  def ensure_correct_user
+    # 他人のページにアクセスした場合はリダイレクト
+    if params[:id].to_i != current_user.id
+      redirect_to user_path(current_user), alert: "権限がありません"
+    end
   end
 end
