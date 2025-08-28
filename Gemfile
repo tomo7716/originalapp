@@ -72,3 +72,4 @@ group :production do
 end
 gem "sassc-rails"
 gem "bcrypt", "~> 3.1.7"
+gem 'devise'
