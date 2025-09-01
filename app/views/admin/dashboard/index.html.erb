@@ -1,0 +1,28 @@
+<% content_for :subtitle do %>
+  管理者ダッシュボード
+<% end %>
+
+  <main>
+    <h2>会員一覧</h2>
+
+    <% @users&.each do |user| %>
+      <div class="user-card">
+        <h3>保護者名: <%= user.name %> さん</h3>
+
+        <ul>
+          <% user.students&.each do |student| %>
+            <li>
+              生徒: <%= student.name %>（残ポイント：<%# <%= student.points %>）
+            </li>
+          <% end %>
+        </ul>
+
+        <div class="actions">
+          <%= link_to "詳細を見る", "#", class: "btn btn-primary" %>
+        </div>
+      </div>
+      <hr>
+    <% end %>
+  </main>
+</body>
+</html>

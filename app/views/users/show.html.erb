@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>ポイント管理アプリ - マイページ</title>
-  <%= stylesheet_link_tag 'sessions', media: 'all' %>
-</head>
-<body>
-  <header>
-    <span>ポイント管理アプリ</span>
-    <span>マイページ</span>
-    <span>
-      <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "本当にログアウトしますか？" } %>
-    </span>
-  </header>
+<% content_for :subtitle do %>
+  マイページ
+<% end %>
 
   <main>
     <div class="user-info">

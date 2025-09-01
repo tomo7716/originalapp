@@ -7,21 +7,6 @@ body {
   color: #333;
 }
 
-/* ヘッダー */
-header {
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 15px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-header span:first-child {
-  font-weight: 600;
-  font-size: 1.2em;
-  color: #0066cc;
-}
 
 /* メイン */
 main {
@@ -133,6 +118,15 @@ button[type="submit"]:active {
 }
 .signup a:hover {
   text-decoration: underline;
+}
+
+.signup-link {
+  color: white;       /* 白に固定 */
+  text-decoration: underline;
+}
+
+.signup-link:hover {
+  color: #e0e0e0;    /* ホバー時少し明るく */
 }
 
 /* 管理者メモ */

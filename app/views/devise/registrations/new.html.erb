@@ -1,7 +1,6 @@
-<header>
-  <span>ポイント管理アプリ</span>
-  <span>新規登録</span>
-</header>
+<% content_for :subtitle do %>
+  新規登録
+<% end %>
 
 <main>
   <h2>新規登録</h2>
@@ -48,7 +47,7 @@
 
   <div class="signup">
     <p>すでにアカウントをお持ちの方はこちら</p>
-    <%= link_to "ログイン", new_user_session_path, class: "btn btn-secondary" %>
+    <%= link_to "ログイン", new_user_session_path, class: "signup-link" %>
   </div>
 
   <div class="admin-note">
