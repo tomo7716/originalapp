@@ -10,7 +10,9 @@ module Admin
     private
 
     def ensure_admin_user
-      redirect_to root_path, alert: "権限がありません" unless current_user.admin?
+      unless current_user&.admin?
+        redirect_to user_path(current_user), alert: "権限がありません"
+      end
     end
   end
 end

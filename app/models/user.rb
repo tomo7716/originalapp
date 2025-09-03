@@ -6,7 +6,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :students, allow_destroy: true
 
   validate :must_have_at_least_one_student
-
+  validates :name, presence: true
   private
 
   def must_have_at_least_one_student
