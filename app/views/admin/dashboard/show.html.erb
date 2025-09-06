@@ -1,0 +1,81 @@
+<% content_for :subtitle do %>
+  会員詳細
+<% end %>
+
+<main class="admin-main">
+  <h2><%= @user.name %> さん（保護者）</h2>
+
+  <hr>
+
+  <!-- 【ポイント付与】受講履歴 -->
+  <h3 style="margin-top: 1.5rem;">【ポイント付与】</h3>
+  <div style="overflow-x:auto; margin-bottom: 2rem;">
+    <table style="width:100%; border-collapse: collapse; min-width:900px;">
+      <thead>
+        <tr style="background:#f8f9fa;">
+          <th style="border:1px solid #ccc; padding:4px;">受講日</th>
+          <th style="border:1px solid #ccc; padding:4px;">名前(生徒)</th>
+          <th style="border:1px solid #ccc; padding:4px;">教室名</th>
+          <th style="border:1px solid #ccc; padding:4px;">コース</th>
+          <th style="border:1px solid #ccc; padding:4px;">タイプ</th>
+          <th style="border:1px solid #ccc; padding:4px;">チケット</th>
+          <th style="border:1px solid #ccc; padding:4px;">ポイント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+          <% student.lessons.order(date: :desc).each do |lesson| %>
+            <tr>
+              <td style="border:1px solid #ccc; padding:4px;"><%= lesson.date.strftime("%Y年%-m月%-d日") %></td>
+              <td style="border:1px solid #ccc; padding:4px;"><%= student.name %></td>
+              <td style="border:1px solid #ccc; padding:4px;"><%= lesson.classroom_name %></td>
+              <td style="border:1px solid #ccc; padding:4px;"><%= lesson.course %></td>
+              <td style="border:1px solid #ccc; padding:4px;"><%= lesson.lesson_type %></td>
+              <td style="border:1px solid #ccc; padding:4px;"><%= lesson.ticket_count %>枚</td>
+              <td style="border:1px solid #ccc; padding:4px;"><%= lesson.points %>pt</td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+   <!-- 【ポイント使用】交換履歴 -->
+  <h3 style="margin-top: 1.5rem;">【ポイント使用】</h3>
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse: collapse; min-width:700px;">
+      <thead>
+        <tr style="background:#f8f9fa;">
+          <th style="border:1px solid #ccc; padding:4px;">申請日</th>
+          <th style="border:1px solid #ccc; padding:4px;">商品名</th>
+          <th style="border:1px solid #ccc; padding:4px;">数量</th>
+          <th style="border:1px solid #ccc; padding:4px;">使用ポイント</th>
+          <th style="border:1px solid #ccc; padding:4px;">状態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if defined?(@point_exchanges) && @point_exchanges.present? %>
+          <%# <% @point_exchanges.each do |exchange| %>
+            <%# <tr> %>
+              <%# <td style="border:1px solid #ccc; padding:4px;"><%= exchange.applied_on.strftime("%Y年%-m月%-d日") if exchange.applied_on %></td> %>
+              <%# <td style="border:1px solid #ccc; padding:4px;"><%= exchange.item_name %></td>
+              <%# <td style="border:1px solid #ccc; padding:4px;"><%= exchange.quantity %></td>
+              <%# <td style="border:1px solid #ccc; padding:4px;"><%= exchange.used_points %>pt</td>
+              <%# <td style="border:1px solid #ccc; padding:4px;"><%= exchange.status %></td>
+            <%# </tr> %>
+          <%# <% end %>
+        <% else %>
+          <tr>
+            <td colspan="5" style="border:1px solid #ccc; padding:4px; text-align:center;">履歴なし</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:1rem;">
+    <%= link_to "← 会員一覧に戻る", admin_dashboard_path, class: "btn btn-secondary" %>
+  </div>
+</main>
+  <%= link_to "← 会員一覧に戻る", admin_dashboard_index_path, class: "btn btn-secondary" %>
+</main>

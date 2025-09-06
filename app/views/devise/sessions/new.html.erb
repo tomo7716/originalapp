@@ -2,28 +2,30 @@
   ログイン
 <% end %>
 
-<h2>ログイン</h2>
-<%= form_with(model: resource, url: session_path(resource_name)) do |f| %>
-  <div>
-    <%= f.label :email, "メールアドレス" %>
-    <%= f.email_field :email, required: true %>
+<main>
+  <h2>ログイン</h2>
+  <%= form_with(model: resource, url: session_path(resource_name)) do |f| %>
+    <div>
+      <%= f.label :email, "メールアドレス" %>
+      <%= f.email_field :email, required: true %>
+    </div>
+
+    <div>
+      <%= f.label :password, "パスワード" %>
+      <%= f.password_field :password, required: true %>
+    </div>
+
+    <div>
+      <button type="submit" class="btn">ログイン</button>
+    </div>
+  <% end %>
+
+  <div class="signup">
+    <p>まだアカウントをお持ちでない方はこちら</p>
+    <%= link_to "新規登録", new_user_registration_path, class: "signup-link" %>
   </div>
 
-  <div>
-    <%= f.label :password, "パスワード" %>
-    <%= f.password_field :password, required: true %>
+  <div class="admin-note">
+    ※ 管理者もこちらからログインできます
   </div>
-
-  <div>
-    <button type="submit" class="btn">ログイン</button>
-  </div>
-<% end %>
-
-<div class="signup">
-  <p>まだアカウントをお持ちでない方はこちら</p>
-  <%= link_to "新規登録", new_user_registration_path, class: "signup-link" %>
-</div>
-
-<div class="admin-note">
-  ※ 管理者もこちらからログインできます
-</div>
+</main>

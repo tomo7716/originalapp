@@ -2,27 +2,78 @@
   管理者ダッシュボード
 <% end %>
 
-  <main>
-    <h2>会員一覧</h2>
+<main class="admin-main">
+  <!-- タイトル + 右上ボタン -->
+  <div class="header-bar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <h2 style="margin:0;">会員一覧</h2>
+    <%= link_to "ポイント付与", new_admin_point_grant_path, class: "btn btn-success" %>
+  </div>
 
-    <% @users&.each do |user| %>
-      <div class="user-card">
-        <h3>保護者名: <%= user.name %> さん</h3>
-
-        <ul>
-          <% user.students&.each do |student| %>
-            <li>
-              生徒: <%= student.name %>（残ポイント：<%# <%= student.points %>）
-            </li>
-          <% end %>
-        </ul>
-
-        <div class="actions">
-          <%= link_to "詳細を見る", "#", class: "btn btn-primary" %>
-        </div>
-      </div>
-      <hr>
+  <!-- 検索フォーム -->
+  <div class="search-form" style="margin-bottom: 1rem;">
+    <%= form_with url: admin_dashboard_path, method: :get, local: true do |f| %>
+      <%= f.label :q, "検索:" %>
+      <%= f.text_field :q, value: params[:q], placeholder: "保護者名や生徒名で検索" %>
+      <%= f.submit "検索", class: "btn btn-primary" %>
     <% end %>
-  </main>
-</body>
-</html>
+  </div>
+
+  <!-- ソートリンク -->
+  <div class="sort-links" style="margin-bottom: 1rem;">
+    並び替え:
+    <%= link_to "保護者名順", admin_dashboard_path(sort: "user_name", q: params[:q]) %> |
+    <%= link_to "生徒名順", admin_dashboard_path(sort: "student_name", q: params[:q]) %> |
+    <%= link_to "ポイント順", admin_dashboard_path(sort: "points", q: params[:q]) %>
+  </div>
+
+  <!-- 横スクロール対応テーブル -->
+  <div style="overflow-x:auto;">
+    <table class="user-table" style="width:100%; min-width:1000px; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>登録日</th>
+          <th>名前(親)</th>
+          <th>名前(生徒)</th>
+          <th>教室名</th>
+          <th>最終受講日</th> 
+          <th>残ポイント</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <% if user.students.any? %>
+            <% user.students.each do |student| %>
+              <tr>
+                <td><%= user.created_at.strftime("%Y年%-m月%-d日") %></td>
+                <td><%= user.name %></td>
+                <td><%= student.name %></td>
+                <td>
+                  <% classroom_names = student.lessons.pluck(:classroom_name).uniq %>
+                  <%= classroom_names.any? ? classroom_names.join(" / ") : "未受講" %>
+                </td>
+                <td>
+                  <% last_date = student.lessons.maximum(:date) %>
+                  <%= last_date.present? ? last_date.strftime("%Y年%-m月%-d日") : "未受講" %>
+                </td>
+                <td><%= student.points %>pt</td>
+                <td>
+                  <%= link_to "詳細", admin_dashboard_user_path(user), class: "btn btn-primary" %>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td><%= user.created_at.strftime("%Y年%-m月%-d日") %></td>
+              <td><%= user.name %></td>
+              <td colspan="4">生徒登録なし</td> 
+              <td>
+                <%= link_to "詳細", admin_dashboard_user_path(user), class: "btn btn-primary" %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</main>

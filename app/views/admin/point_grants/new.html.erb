@@ -1,0 +1,66 @@
+<% content_for :subtitle do %>
+  ポイント付与
+<% end %>
+
+<main>
+  <h2>ポイント付与</h2>
+
+  <%= form_with model: @lesson, url: admin_point_grants_path, local: true do |f| %>
+
+    <!-- 生徒選択 -->
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :student_id, "対象の生徒" %><br>
+      <%= f.collection_select :student_id, @students, :id, ->(s) { "#{s.user.name} - #{s.name}（残: #{s.points || 0}）" }, prompt: "選択してください" %>
+    </div>
+
+    <!-- チケット枚数 -->
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :ticket_count, "チケット枚数" %><br>
+      <%= f.number_field :ticket_count, value: 0, min: 0, required: true %>
+      <small>※自動的に 1枚 = 100pt が付与されます</small>
+    </div>
+
+    <!-- 受講日付 -->
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :date, "受講日付" %><br>
+      <%= f.date_field :date, value: Date.today, required: true %>
+    </div>
+
+    <!-- 受講教室 -->
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :classroom_name, "受講教室" %><br>
+      <%= f.select :classroom_name,
+            ["大宮本校", "モラージュ菖蒲校", "越谷校", "たまぷらーざ校","オンライン(グループ)", "オンライン(個別)"],
+            { include_blank: "選択してください" },
+            required: true %>
+    </div>
+
+    <!-- コース -->
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :course, "コース" %><br>
+      <%= f.select :course,
+            [
+              "scratch", "scratch デザイン", "マイクラプログラミング", "ロボット", "Webマスター",
+              "3DCG", "Unity", "マイクライングリッシュ", "イベント(チケット1枚)", "イベント(チケット2枚)",
+              "イベント(チケット3枚)", "イベント(チケット4枚)", "イベント(チケット5枚)",
+              "LABO(月謝+チケット)", "LABO(チケット5枚)", "LABO(チケット6枚)",
+              "低学年レッスン", "動画編集"
+            ],
+            { include_blank: "選択してください" },
+            required: true %>
+    </div>
+
+    <!-- タイプ -->
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :lesson_type, "タイプ" %><br>
+      <%= f.select :lesson_type, ["チケット", "月謝"], { include_blank: "選択してください" }, required: true %>
+    </div>
+
+    <!-- 送信ボタン -->
+    <div>
+      <%= f.submit "付与する", class: "btn btn-success", data: { turbo_confirm: "この内容で付与します。よろしいですか？" } %>
+      <%= link_to "戻る", admin_dashboard_path, class: "btn btn-secondary", style: "margin-left: .5rem;" %>
+    </div>
+
+  <% end %>
+</main>

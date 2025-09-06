@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   # 管理者用ダッシュボード
   namespace :admin do
     get 'dashboard', to: 'dashboard#index'
+    get "dashboard/:id", to: "dashboard#show", as: "dashboard_user"
+    resources :point_grants, only: [:new, :create]
+    resources :dashboard, only: [:index, :show]
   end
 
   # 一般ユーザーのマイページ

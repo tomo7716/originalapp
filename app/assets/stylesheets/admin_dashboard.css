@@ -6,11 +6,15 @@ body {
   padding: 0;
 }
 
-
-main {
-  max-width: 900px;
+/* 管理者用メイン（ここを基準にする） */
+main.admin-main {
+  max-width: 1200px;   /* 管理画面は広め */
   margin: 30px auto;
-  padding: 0 20px;
+  padding: 20px;
+  background: #fff;    
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow-x: auto;    /* 小さい画面では横スクロール */
 }
 
 h2 {
@@ -72,4 +76,40 @@ hr {
   border: 0;
   border-top: 1px solid #ddd;
   margin: 20px 0;
+}
+
+/* ユーザー一覧テーブル */
+.user-table-wrapper {
+  width: 100%;
+  overflow-x: auto; /* 横スクロール対応 */
+  padding: 1rem 0;
+}
+
+.user-table {
+  width: 100%;
+  min-width: 1200px; /* PCでは広め */
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+/* 列の幅調整 */
+.user-table th:nth-child(1) { width: 120px; } /* 日付 */
+.user-table th:nth-child(2) { width: 150px; } /* 親名 */
+.user-table th:nth-child(3) { width: 150px; } /* 生徒名 */
+.user-table th:nth-child(4) { width: 300px; } /* 教室名 */
+.user-table th:nth-child(5) { width: 120px; } /* 最終受講日 */
+.user-table th:nth-child(6) { width: 80px; } /* 残ポイント */
+.user-table th:nth-child(7) { width: 50px; } /* 操作 */
+
+/* スマホ・タブレット用 */
+@media (max-width: 768px) {
+  .user-table {
+    min-width: 900px; /* 小さい画面はスクロール可能 */
+  }
 }

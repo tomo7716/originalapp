@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_01_120426) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_05_153045) do
+  create_table "lessons", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.string "classroom_name"
+    t.date "date"
+    t.string "course"
+    t.string "lesson_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "ticket_count"
+    t.integer "points"
+    t.index ["student_id"], name: "index_lessons_on_student_id"
+  end
+
   create_table "students", charset: "utf8mb3", force: :cascade do |t|
     t.string "name"
     t.bigint "user_id", null: false
@@ -34,5 +47,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_120426) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "lessons", "students"
   add_foreign_key "students", "users"
 end
