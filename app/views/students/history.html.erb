@@ -1,0 +1,66 @@
+<% content_for :subtitle do %>
+  ポイント履歴
+<% end %>
+
+<main class="user-main">
+  <h2><%= @student.user.name %> さん / <%= @student.name %> の履歴</h2>
+
+  <!-- ポイント付与履歴 -->
+  <h3>【ポイント付与】</h3>
+<div style="max-height: 400px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid #ccc;">
+  <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+    <thead style="position: sticky; top: 0; background: #f9f9f9;">
+      <tr>
+        <th>受講日</th>
+        <th>教室名</th>
+        <th>コース</th>
+        <th>タイプ</th>
+        <th>チケット</th>
+        <th>ポイント</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @lessons.each do |lesson| %>
+        <tr>
+          <td><%= lesson.date.strftime("%Y年%-m月%-d日") %></td>
+          <td><%= lesson.classroom_name %></td>
+          <td><%= lesson.course %></td>
+          <td><%= lesson.lesson_type %></td>
+          <td><%= lesson.ticket_count || 0 %>枚</td>
+          <td><%= lesson.points || 0 %>pt</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+  <!-- ポイント使用履歴 -->
+  <h3 style="margin-top:2rem;">【ポイント使用】</h3>
+  <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+    <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; min-width: 900px;">
+      <thead>
+        <tr>
+          <th>申請日</th>
+          <th>商品・数量</th>
+          <th>使用ポイント</th>
+          <th>状態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @point_exchanges.each do |exchange| %>
+          <tr>
+            <td><%= exchange.created_at.strftime("%Y年%-m月%-d日") %></td>
+            <td><%= exchange.description %></td>
+            <td><%= exchange.points %>pt</td>
+            <td><%= exchange.status %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 戻るボタン -->
+  <div style="margin-top: 20px; text-align: left;">
+    <%= link_to "マイページに戻る", user_path(current_user), class: "btn btn-secondary" %>
+  </div>
+</main>

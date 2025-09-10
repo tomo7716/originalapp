@@ -1,22 +1,35 @@
+// registrations.js
+// Turbo 対応 / 冪等バインド / 削除ボタンはイベント委譲で処理
+
 document.addEventListener("turbo:load", () => {
   const addButton = document.getElementById("add-student");
   const container = document.getElementById("students-container");
+  if (!addButton || !container) return;
 
-  if (!addButton) return;
+  // 既にバインド済みなら何もしない（重複防止）
+  if (addButton.dataset.bound === "1") return;
+  addButton.dataset.bound = "1";
+
+  // 初期 index を現状の .student-field 数に合わせる
+  let index = container.querySelectorAll(".student-field").length;
 
   addButton.addEventListener("click", () => {
     const newField = document.createElement("div");
-    newField.classList.add("student-field");
-
+    newField.className = "student-field";
     newField.innerHTML = `
       <label>生徒名</label>
-      <input type="text" name="student_names[]" required style="width: 70%; display: inline-block;">
-      <button type="button" class="remove-student" style="display: inline-block; padding: 5px 10px; font-size: 0.85em; margin-left: 5px;">削除</button>
+      <input type="text" name="user[students_attributes][${index}][name]" style="width:70%; display:inline-block;">
+      <button type="button" class="remove-student" style="margin-left:6px;">削除</button>
     `;
     container.appendChild(newField);
+    index++;
+  });
 
-    newField.querySelector(".remove-student").addEventListener("click", (e) => {
-      e.target.parentElement.remove();
-    });
+  // 削除ボタンはイベント委譲でハンドリング（後から追加された要素にも対応）
+  container.addEventListener("click", (e) => {
+    if (e.target && e.target.classList.contains("remove-student")) {
+      const field = e.target.closest(".student-field");
+      if (field) field.remove();
+    }
   });
 });

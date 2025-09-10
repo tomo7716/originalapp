@@ -28,4 +28,11 @@ class UsersController < ApplicationController
       redirect_to user_path(current_user), alert: "権限がありません"
     end
   end
+
+  def user_params
+    params.require(:user).permit(
+      :name, :email, :password, :password_confirmation,
+      students_attributes: [:id, :name, :_destroy]
+    )
+  end
 end

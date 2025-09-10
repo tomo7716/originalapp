@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_05_153045) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_10_100407) do
+  create_table "items", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
+    t.integer "points"
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "lessons", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "student_id", null: false
     t.string "classroom_name"
@@ -22,6 +30,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_05_153045) do
     t.integer "ticket_count"
     t.integer "points"
     t.index ["student_id"], name: "index_lessons_on_student_id"
+  end
+
+  create_table "point_exchanges", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.integer "points"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "pending", null: false
+    t.index ["student_id"], name: "index_point_exchanges_on_student_id"
   end
 
   create_table "students", charset: "utf8mb3", force: :cascade do |t|
@@ -48,5 +66,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_05_153045) do
   end
 
   add_foreign_key "lessons", "students"
+  add_foreign_key "point_exchanges", "students"
   add_foreign_key "students", "users"
 end

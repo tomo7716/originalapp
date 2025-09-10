@@ -28,7 +28,7 @@
 
   <!-- 横スクロール対応テーブル -->
   <div style="overflow-x:auto;">
-    <table class="user-table" style="width:100%; min-width:1000px; border-collapse: collapse;">
+    <table class="user-table" style="width:100%; min-width:1100px; border-collapse: collapse;">
       <thead>
         <tr>
           <th>登録日</th>
@@ -37,36 +37,52 @@
           <th>教室名</th>
           <th>最終受講日</th> 
           <th>残ポイント</th>
+          <th>申請状況</th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody>
         <% @users.each do |user| %>
           <% if user.students.any? %>
-            <% user.students.each do |student| %>
-              <tr>
-                <td><%= user.created_at.strftime("%Y年%-m月%-d日") %></td>
-                <td><%= user.name %></td>
-                <td><%= student.name %></td>
-                <td>
-                  <% classroom_names = student.lessons.pluck(:classroom_name).uniq %>
-                  <%= classroom_names.any? ? classroom_names.join(" / ") : "未受講" %>
-                </td>
-                <td>
-                  <% last_date = student.lessons.maximum(:date) %>
-                  <%= last_date.present? ? last_date.strftime("%Y年%-m月%-d日") : "未受講" %>
-                </td>
-                <td><%= student.points %>pt</td>
-                <td>
-                  <%= link_to "詳細", admin_dashboard_user_path(user), class: "btn btn-primary" %>
-                </td>
-              </tr>
-            <% end %>
+            <tr>
+              <td><%= user.created_at.strftime("%Y年%-m月%-d日") %></td>
+              <td><%= user.name %></td>
+              <td><%= user.students.map(&:name).join(" / ") %></td>
+              <td>
+                <% classroom_names = user.students.map { |s| s.lessons.pluck(:classroom_name) }.flatten.uniq %>
+                <%= classroom_names.any? ? classroom_names.join(" / ") : "未受講" %>
+              </td>
+              <td>
+                <% last_date = user.students.map { |s| s.lessons.maximum(:date) }.compact.max %>
+                <%= last_date.present? ? last_date.strftime("%Y年%-m月%-d日") : "未受講" %>
+              </td>
+              <td><%= user.students.sum(:points) %>pt</td>
+              <td>
+                <% if user.point_exchanges.pending.any? %>
+                  <span style="color:red; font-weight:bold;">
+                    承認待ち (<%= user.point_exchanges.pending.count %>件)
+                  </span>
+                <% elsif user.point_exchanges.approved.any? %>
+                  <span style="color:green; font-weight:bold;">
+                    承認済み (<%= user.point_exchanges.approved.count %>件)
+                  </span>
+                <% elsif user.point_exchanges.rejected.any? %>
+                  <span style="color:gray;">
+                    却下 (<%= user.point_exchanges.rejected.count %>件)
+                  </span>
+                <% else %>
+                  なし
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "詳細", admin_dashboard_user_path(user), class: "btn btn-primary" %>
+              </td>
+            </tr>
           <% else %>
             <tr>
               <td><%= user.created_at.strftime("%Y年%-m月%-d日") %></td>
               <td><%= user.name %></td>
-              <td colspan="4">生徒登録なし</td> 
+              <td colspan="5">生徒登録なし</td> 
               <td>
                 <%= link_to "詳細", admin_dashboard_user_path(user), class: "btn btn-primary" %>
               </td>

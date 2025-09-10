@@ -3,10 +3,17 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :students, inverse_of: :user, dependent: :destroy
+  has_many :point_exchanges, through: :students
+
   accepts_nested_attributes_for :students, allow_destroy: true
 
-  validate :must_have_at_least_one_student
+  validate :must_have_at_least_one_student, unless: :admin?
   validates :name, presence: true
+
+  def total_points
+    students.sum(:points)
+  end
+
   private
 
   def must_have_at_least_one_student

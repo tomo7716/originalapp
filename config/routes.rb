@@ -20,6 +20,14 @@ Rails.application.routes.draw do
   # 一般ユーザーのマイページ
   resources :users, only: [:show]
 
+  resources :students, only: [] do
+    member do
+      get :history   # /students/:id/history
+    end
+  end
+
+  resources :point_exchanges, only: [:new, :create]
+
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
 end

@@ -1,0 +1,35 @@
+<% content_for :subtitle do %>
+  商品交換申請
+<% end %>
+
+<main class="user-main">
+  <h2>商品交換申請ページ</h2>
+
+  <!-- 合計ポイント表示 -->
+  <div class="available-points" style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #ccc; background-color: #f9f9f9;">
+    <h3>交換可能ポイント</h3>
+    <p><%= current_user.total_points %> pt</p>
+  </div>
+
+  <%= form_with url: point_exchanges_path, method: :post, local: true do |f| %>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+
+      <% @items.each do |item| %>
+        <div style="border: 1px solid #ccc; padding: 1rem; text-align: center;">
+          <h3><%= item.name %></h3>
+          <%= image_tag(item.image_url, alt: item.name, style: "width:250px;height:200px;") %><br>
+          <p><%= item.points %> pt</p>
+
+          <!-- 数量入力 -->
+          <%= number_field_tag "quantities[#{item.id}]", 0, min: 0, style: "width:60px;" %>
+        </div>
+      <% end %>
+
+    </div>
+
+    <div style="margin-top: 2rem;">
+      <%= link_to "マイページに戻る", user_path(current_user), class: "btn btn-secondary" %>
+      <%= f.submit "申請する", class: "btn btn-primary", style: "margin-left:1rem;" %>
+    </div>
+  <% end %>
+</main>
