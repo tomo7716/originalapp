@@ -1,0 +1,36 @@
+.app-header {
+  background-color: #0066cc;  /* 青系 */
+  color: white;
+  padding: 10px 20px;
+  position: relative;  /* 子要素をabsoluteで配置できるようにする */
+  display: flex;
+  align-items: center;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.app-subtitle {
+  font-size: 20px;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* ちょうど中央に */
+}
+
+.app-logout {
+  margin-left: auto; /* 右端に寄せる */
+}
+
+.app-header .app-logout a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.app-header .app-logout a:hover {
+  text-decoration: underline;
+}

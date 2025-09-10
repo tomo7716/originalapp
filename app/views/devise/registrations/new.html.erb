@@ -1,0 +1,57 @@
+<% content_for :subtitle do %>
+  新規登録
+<% end %>
+
+<main>
+  <h2>新規登録</h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div>
+      <%= f.label :name, "保護者名" %>
+      <%= f.text_field :name, required: true %>
+    </div>
+
+    <!-- 生徒名入力欄 -->
+    <div id="students-container">
+      <%= f.fields_for :students do |student_form| %>
+        <div class="student-field">
+          <label>生徒名</label>
+          <%= student_form.text_field :name, required: true %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- 生徒追加ボタン -->
+    <button type="button" id="add-student">生徒を追加</button>
+
+    <div>
+      <%= f.label :email, "メールアドレス" %>
+      <%= f.email_field :email, required: true %>
+    </div>
+
+    <div>
+      <%= f.label :password, "パスワード" %>
+      <%= f.password_field :password, required: true %>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation, "パスワード（確認）" %>
+      <%= f.password_field :password_confirmation, required: true %>
+    </div>
+
+    <div>
+      <button type="submit" class="btn">登録</button>
+    </div>
+  <% end %>
+
+  <div class="signup">
+    <p>すでにアカウントをお持ちの方はこちら</p>
+    <%= link_to "ログイン", new_user_session_path, class: "signup-link" %>
+  </div>
+
+  <div class="admin-note">
+    ※ 管理者もこちらから新規登録できます
+  </div>
+</main>

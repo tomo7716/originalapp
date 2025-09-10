@@ -8,9 +8,22 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script type="module">
+      import "registrations"
+    </script>
   </head>
 
   <body>
+    <%= render "layouts/header" %>
+
+    <% if notice %>
+    <p style="color: green;"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+    <p style="color: red;"><%= alert %></p>
+    <% end %>
+
+  
     <%= yield %>
   </body>
 </html>

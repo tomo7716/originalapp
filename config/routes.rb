@@ -1,10 +1,33 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Devise のルーティング
+  devise_for :users, controllers: {
+    registrations: "users/registrations"
+  }
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  devise_scope :user do
+    # ログイン画面を root に
+    root to: "devise/sessions#new"
+  end
+
+  # 管理者用ダッシュボード
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index'
+    get "dashboard/:id", to: "dashboard#show", as: "dashboard_user"
+    resources :point_grants, only: [:new, :create]
+    resources :dashboard, only: [:index, :show]
+  end
+
+  # 一般ユーザーのマイページ
+  resources :users, only: [:show]
+
+  resources :students, only: [] do
+    member do
+      get :history   # /students/:id/history
+    end
+  end
+
+  resources :point_exchanges, only: [:new, :create]
+
+  # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

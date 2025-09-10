@@ -1,0 +1,30 @@
+<% content_for :subtitle do %>
+  マイページ
+<% end %>
+
+<main class="user-main">
+  <div class="user-info">
+    <h2><%= current_user.name %> さん</h2>
+  </div>
+
+  <div class="students-list">
+    <h3>生徒名とポイント</h3>
+    <ul>
+      <% @students&.each do |student| %>
+        <li>
+          <%= student.name %>（残ポイント：<%= student.points %> pt）
+          <%= link_to "ポイント履歴", history_student_path(student), class: "btn btn-primary", style: "margin-left:0.5rem;" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="total-points">
+    <h3>ご家庭の合計ポイント</h3>
+    <p><%= current_user.total_points %> pt</p>
+  </div>
+
+  <div class="actions">
+    <%= link_to "商品交換申請", new_point_exchange_path, class: "btn btn-primary" %>
+  </div>
+</main>
