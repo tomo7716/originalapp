@@ -2,16 +2,14 @@ module Admin
   class DashboardController < ApplicationController
     before_action :authenticate_user!
     before_action :require_admin!
-    
+
     def index
       @users = User.includes(:students).all
-
       # --- 検索 ---
       if params[:q].present?
         keyword = "%#{params[:q]}%"
-        @users = @users.where("users.name LIKE ?", keyword)
-                       .or(@users.where("students.name LIKE ?", keyword))
-                       .left_joins(:students)
+        @users = @users.left_joins(:students)
+                       .where("users.name LIKE ? OR students.name LIKE ?", keyword, keyword)
                        .distinct
       end
 
@@ -29,12 +27,8 @@ module Admin
     def show
       @user = User.find(params[:id])
       @students = @user.students.includes(:lessons)
-
-      # ポイント付与履歴（Lesson）
       @lessons = Lesson.joins(:student).where(students: { user_id: @user.id }).order(date: :desc)
-
-      # ポイント使用履歴（PointExchange）
-      # @point_exchanges = PointExchange.where(user: @user).order(created_at: :desc)
+      # @point_exchanges = PointExchange.joins(:student).where(students: { user_id: @user.id }).order(created_at: :desc)
     end
 
     private
@@ -42,6 +36,5 @@ module Admin
     def require_admin!
       redirect_to root_path, alert: "権限がありません" unless current_user&.admin?
     end
-
   end
 end
