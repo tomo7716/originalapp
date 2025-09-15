@@ -28,7 +28,9 @@ module Admin
       @user = User.find(params[:id])
       @students = @user.students.includes(:lessons)
       @lessons = Lesson.joins(:student).where(students: { user_id: @user.id }).order(date: :desc)
-      # @point_exchanges = PointExchange.joins(:student).where(students: { user_id: @user.id }).order(created_at: :desc)
+      @point_exchanges = PointExchange.joins(:student)
+                                      .where(students: { user_id: @user.id })
+                                      .order(created_at: :desc)
     end
 
     private
