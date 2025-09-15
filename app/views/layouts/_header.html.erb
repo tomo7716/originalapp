@@ -4,8 +4,8 @@
   <span class="app-subtitle"><%= content_for?(:subtitle) ? yield(:subtitle) : "" %></span>
   <div class="app-logout">
     <% if user_signed_in? %>
-      <%= link_to "ログアウト", destroy_user_session_path, 
-          data: { turbo_method: :delete, turbo_confirm: "本当にログアウトしますか？" } %>
+      <%= link_to "ログアウト", destroy_user_session_path,
+    data: { "turbo-method": :delete, "turbo-confirm": "本当にログアウトしますか？" } %>
     <% end %>
   </div>
 </header>

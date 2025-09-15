@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # Devise のルーティング
   devise_for :users, controllers: {
     registrations: "users/registrations"
-  }
+  }, sign_out_via: [:get, :delete]
 
   devise_scope :user do
     # ログイン画面を root に
