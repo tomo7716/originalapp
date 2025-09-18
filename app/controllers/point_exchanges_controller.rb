@@ -49,5 +49,6 @@ class PointExchangesController < ApplicationController
 
   def set_items
     @items = Item.all
+    Rails.logger.info "=== Items count: #{@items.count} ==="
   end
 end
