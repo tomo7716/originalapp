@@ -10,19 +10,3 @@
 Item.create!(name: "商品1", points: 1300, image_url: "sample1.png")
 Item.create!(name: "商品2", points: 2200, image_url: "sample2.png")
 Item.create!(name: "商品3", points: 3100, image_url: "sample3.png")
-
-# --- 管理者アカウント作成 ---
-if ENV["ADMIN_EMAIL"].present? && ENV["ADMIN_PASSWORD"].present?
-  unless User.exists?(email: ENV["ADMIN_EMAIL"])
-    User.create!(
-      name: "管理者",
-      email: ENV["ADMIN_EMAIL"],
-      password: ENV["ADMIN_PASSWORD"],
-      password_confirmation: ENV["ADMIN_PASSWORD"],
-      admin: true
-    )
-    puts "管理者アカウント作成完了"
-  else
-    puts "管理者アカウントは既に存在します"
-  end
-end
