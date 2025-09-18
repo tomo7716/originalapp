@@ -17,7 +17,7 @@
       <% @items.each do |item| %>
         <div style="border: 1px solid #ccc; padding: 1rem; text-align: center;">
           <h3><%= item.name %></h3>
-          <%= image_tag(asset_path(item.image_url), alt: item.name, style: "width:250px;height:200px;") %><br>
+          <%= image_tag "/images/#{item.image_url}", alt: item.name, style: "width:250px;height:200px;" %><br>
           <p><%= item.points %> pt</p>
 
           <!-- 数量入力 -->
